@@ -17,27 +17,22 @@ public class TempServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String one = req.getParameter("one");
-        /** Для того чтобы злоумышленик не мог вставить javascript или тругой код
-         * необходимо экранировать разные символы на HTML символы &
-         * просто replace или использовать специальные библиотеки*/
-        one = one == null ? "" : one.replaceAll("<", "&lt;").replaceAll(">","&gt;");
-        /**  Используем для отправки формы метод  get*/
-        resp.getWriter().write("<html>" +
-                "<head></head>" +
-                "<body>" +
-                "one=" + one +
-                "<form action='temp' method=post>"+
-                "<textarea name='one'/></textarea>"+
-                "<input type='submit' name='submit'/>"+
-                "</form>"+
-                "</body>"+
-                "</html>"
-        );
-    }
+        /** вывод всех заголовков Header'ов */
+        Enumeration<String> headerNames = req.getHeaderNames();
+        while (headerNames.hasMoreElements()){
+            String s = headerNames.nextElement();
+            System.out.println(s + " " + req.getHeader(s));
+        }
+        /** вывод дополнительных параметров из запроса*/
+        System.out.println(req.getAuthType());
+        System.out.println(req.getContentLength());
+        System.out.println(req.getContentType());
+        System.out.println(req.getMethod());
+        System.out.println(req.getRequestURI());
+        System.out.println(req.getQueryString());
+        System.out.println(req.getProtocol());
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-       doGet(req,resp);
+        /** Можно свои параметры писать в заголовки */
+        resp.setHeader("Content-Length","100");
     }
 }
