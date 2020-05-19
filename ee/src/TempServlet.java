@@ -5,8 +5,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.zip.GZIPOutputStream;
+
 
 
 @WebServlet("/temp")
@@ -15,10 +14,18 @@ public class TempServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        /** Если браузер поддерживает сжатие Accept-Encoding=gzip то ответ можно отдавать сжатый а он все разожмет и отобразит нормально    */
-        if(req.getHeader("Accept-Encoding").contains("gzip")){
-            PrintWriter printWriter = new PrintWriter(new GZIPOutputStream(resp.getOutputStream()));
-            printWriter.write("hello world");
-        }
+        /** возвращаем HTTP статутус  */
+        // resp.setStatus(HttpServletResponse.SC_OK);
+        /** Перенаправление на другую страничку*/
+        // resp.sendRedirect("/hello");
+         /** Возврат ошибки */
+        //resp.sendError(HttpServletResponse.SC_BAD_REQUEST,"Текст ошибки");
+        /** можно задать частоту обновления страницы*/
+        //resp.setHeader("Refresh","1");
+        //System.out.println("hello");
+        /** Можно создать задержку и перенаправить на другую страницу*/
+        resp.setHeader("Refresh","5; URL=https://google.com");
+
+
     }
 }
