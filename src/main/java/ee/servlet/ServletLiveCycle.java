@@ -1,4 +1,4 @@
-package ee;
+package ee.servlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

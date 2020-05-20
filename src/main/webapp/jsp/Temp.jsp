@@ -10,10 +10,32 @@
   <body>
   <!-- Комментарий в стиле HTML -->
   <%-- Комментарий в стиле JSP --%>
- <%-- при использовании forward в браузер сруза отправляется то куда форфардим
-      при использовании redirect в сервлете  в браузер отправляется 302 запрос
-      и уже браузер делает переход туда куда перенаправляют
- --%>
-  <jsp:forward page="name"></jsp:forward>
+  <%-- подключаем bean, указываем id - это то как к нему обращаться и класс
+       у бина есть области видимости:
+       page - только на этой странице
+       request - эта страницк+заинклюженные и форварденные
+       session - все странцы в рамках работы сессии
+       application - все странцы в рамках приложения, везе везде, самый широкий доступ
+  --%>
+  <%-- можно укзать тип type, например интерфейс,
+   тогда будет создан обьект типа интерфейс, с реализацией указанного в class--%>
+  <jsp:useBean id="person" class="ee.bean.Person" scope="request"></jsp:useBean>
+  <%-- используем bean устанавливаем значения --%>
+  <jsp:setProperty name="person" property="name" value="Макс"/>
+  <jsp:setProperty name="person" property="age" value="18"/>
+  <%--берем значение из bean, будет выведено на страницу --%>
+  <jsp:getProperty name="person" property="name"/>
+  <br>
+  <jsp:getProperty name="person" property="age"/>
 
+
+  <%-- в параметры можно подавать java переменные и резульат работы кода --%>
+  <%! int age=25; %>
+  <jsp:setProperty name="person" property="age" value="<%= age %>"/>
+  <br>
+  <jsp:getProperty name="person" property="age"/>
+
+
+  <%-- в параметры можно ,брать из запроса --%>
+  <jsp:setProperty name="person" property="age" value="<%= request.getParameter("name") %>"/>
 </html>
