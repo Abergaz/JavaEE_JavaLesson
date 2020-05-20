@@ -6,16 +6,26 @@
     <!-- обязательный элемент это  xsi:schemaLocation  -->
     <!-- xmlns схемы поверки для нашего XML  -->
 
-    <!-- можно указать страницу, которая будет отображаться  -->
-    <!-- если запос не найден, и HTML код ответа, обычно это 404 -->
-    <error-page>
-        <error-code>404</error-code>
-        <location>/jsp/Error.jsp</location>
-    </error-page>
-    <!-- можно указать на какую страницк перекидывать в случе програмных ошибок -->
-    <!-- причем для разных исключений может быть своя страница -->
-    <error-page>
-        <exception-type>javax.servlet.ServletException</exception-type>
-        <location>/jsp/Error.jsp</location>
-    </error-page>
+    <!-- для настойки JSP используется jsp-config  -->
+    <jsp-config>
+        <!-- taglib использования библиотеки тегов  -->
+
+        <!-- jsp-property-group настройка группы параметров для конкретной jsp или группы jsp или всех  -->
+        <jsp-property-group>
+            <!-- указываем к какой jsp относиться настройка, можно ко всем или группе(папке)  -->
+            <url-pattern>/jsp/Page.jsp</url-pattern>
+            <!-- el-ignored включает или отключает expression language -->
+            <el-ignored>false</el-ignored>
+            <!-- scripting-invalid вкд.чать/отключать скриптинг на странице -->
+            <scripting-invalid>false</scripting-invalid>
+            <!-- проверяет jsp на стандарт XML иначе ошибки-->
+            <is-xml>false</is-xml>
+            <!-- include-prelude страница включается в самое начало  -->
+            <include-prelude>/jsp/Header.jsp</include-prelude>
+            <!-- include-coda  страница включается в самый конец -->
+            <include-coda>/jsp/Footer.jsp</include-coda>
+        </jsp-property-group>
+    </jsp-config>
+
+
 </web-app>
