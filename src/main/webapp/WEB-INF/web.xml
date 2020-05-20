@@ -3,5 +3,55 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
+    <!-- обязательный элемент это  xsi:schemaLocation  -->
+    <!-- xmlns схемы поверки для нашего XML  -->
 
+    <!-- тут можно описывать сервлеты и маппинг  -->
+    <servlet>
+        <servlet-name>WebXMLServlet</servlet-name>
+        <servlet-class>ee.servlet.WebXMLServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>WebXMLServlet</servlet-name>
+        <url-pattern>/WebXMLServlet</url-pattern>
+    </servlet-mapping>
+    <!-- welcome-file-list набор файлов который запускаются по уполчанию -->
+    <!-- когда идем на сервер без указания страницы например http://localhost:8080 -->
+    <welcome-file-list>
+        <welcome-file>/html/default.html</welcome-file>
+        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+    <!-- настраивам параметры сессии -->
+    <session-config>
+        <session-timeout>20</session-timeout>
+    </session-config>
+    <!-- настраивам картинки для аплетов -->
+    <icon>
+        <small-icon>/img/small.png</small-icon>
+        <large-icon>/img/large.png</large-icon>
+    </icon>
+    <!-- какое-то описание -->
+    <description>
+        Описание приложения
+    </description>
+    <!-- настроить MIME описание -->
+    <mime-mapping>
+        <extension>foo</extension>
+        <mime-type>application/x-fubar</mime-type>
+    </mime-mapping>
+    <!-- переопределение локалей location -->
+    <locale-encoding-mapping-list>
+        <locale-encoding-mapping>
+            <locale>ru</locale>
+            <encoding>Windows-1251</encoding>
+        </locale-encoding-mapping>
+        <locale-encoding-mapping>
+            <locale>he</locale>
+            <encoding>Windows-1255</encoding>
+        </locale-encoding-mapping>
+    </locale-encoding-mapping-list>
+
+    <!-- говорит о том что приложение будет работать в кластере -->
+    <distributable/>
 </web-app>
