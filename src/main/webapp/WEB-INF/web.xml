@@ -11,6 +11,17 @@
         <!-- можно написать лююое имя как в аннотации @WebServlet  -->
         <servlet-name>name</servlet-name>
         <servlet-class>ee.servlet.WebXMLServlet</servlet-class>
+        <!-- можно описать параметры, которое можно получить в сервлете и использовать  -->
+        <init-param>
+            <param-name>name</param-name>
+            <param-value>Макс</param-value>
+        </init-param>
+        <init-param>
+            <param-name>age</param-name>
+            <param-value>25</param-value>
+        </init-param>
+        <!-- можно укахывать порядок инициализации с 0  -->
+        <load-on-startup>0</load-on-startup>
     </servlet>
 
     <!-- указываем описанное выше имя сервлета и какие запросы на него перекидываем  -->
@@ -20,4 +31,12 @@
         <url-pattern>/servlet</url-pattern>
     </servlet-mapping>
 
+    <!-- аналогичные выше настройки могут быть и для JSP  -->
+
+
+    <!-- параметры доступные всем сервлетам и JSP  -->
+    <context-param>
+        <param-name>email</param-name>
+        <param-value>mail@gmail.com</param-value>
+    </context-param>
 </web-app>
