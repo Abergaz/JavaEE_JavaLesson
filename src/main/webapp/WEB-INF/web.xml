@@ -6,37 +6,16 @@
     <!-- обязательный элемент это  xsi:schemaLocation  -->
     <!-- xmlns схемы поверки для нашего XML  -->
 
-    <!-- тут можно описывать сервлеты и маппинг  -->
-    <servlet>
-        <!-- можно написать лююое имя как в аннотации @WebServlet  -->
-        <servlet-name>name</servlet-name>
-        <servlet-class>ee.servlet.WebXMLServlet</servlet-class>
-        <!-- можно описать параметры, которое можно получить в сервлете и использовать  -->
-        <init-param>
-            <param-name>name</param-name>
-            <param-value>Макс</param-value>
-        </init-param>
-        <init-param>
-            <param-name>age</param-name>
-            <param-value>25</param-value>
-        </init-param>
-        <!-- можно укахывать порядок инициализации с 0  -->
-        <load-on-startup>0</load-on-startup>
-    </servlet>
-
-    <!-- указываем описанное выше имя сервлета и какие запросы на него перекидываем  -->
-    <servlet-mapping>
-        <servlet-name>name</servlet-name>
-        <!-- указываем какой запрос перекидыввем на этот севрлет  -->
-        <url-pattern>/servlet</url-pattern>
-    </servlet-mapping>
-
-    <!-- аналогичные выше настройки могут быть и для JSP  -->
-
-
-    <!-- параметры доступные всем сервлетам и JSP  -->
-    <context-param>
-        <param-name>email</param-name>
-        <param-value>mail@gmail.com</param-value>
-    </context-param>
+    <!-- можно указать страницу, которая будет отображаться  -->
+    <!-- если запос не найден, и HTML код ответа, обычно это 404 -->
+    <error-page>
+        <error-code>404</error-code>
+        <location>/jsp/Error.jsp</location>
+    </error-page>
+    <!-- можно указать на какую страницк перекидывать в случе програмных ошибок -->
+    <!-- причем для разных исключений может быть своя страница -->
+    <error-page>
+        <exception-type>javax.servlet.ServletException</exception-type>
+        <location>/jsp/Error.jsp</location>
+    </error-page>
 </web-app>
