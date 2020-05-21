@@ -20,5 +20,7 @@ public class MyTag extends SimpleTagSupport {
     public void doTag() throws JspException, IOException {
         getJspContext().getOut().print("hello world ");
         getJspContext().getOut().print(name);
+        getJspBody().invoke(null);
+        getJspContext().setAttribute("one","value");
     }
 }

@@ -10,7 +10,7 @@
 <body>
     <%-- используем кастомный тег,
     сначала имя-ссылка на описание потом имя тега --%>
-    <MyTagLib:MyTag name="Max"/>
+    <MyTagLib:MyTag name="Max"> tag_body ${one} </MyTagLib:MyTag>
     <br>
     <%-- используем кастомный JSP тег --%>
     <MyJSPTagLib:MyJSPTag name="Max">bodytag</MyJSPTagLib:MyJSPTag>

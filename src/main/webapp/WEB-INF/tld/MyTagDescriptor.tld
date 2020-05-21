@@ -12,7 +12,7 @@
     <tag>
         <name>MyTag</name>
         <tag-class>ee.tag.MyTag</tag-class>
-        <body-content>empty</body-content>
+        <body-content>scriptless</body-content>
         <attribute>
             <name>name</name>
         </attribute>
