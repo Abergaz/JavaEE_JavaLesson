@@ -6,26 +6,34 @@
     <!-- обязательный элемент это  xsi:schemaLocation  -->
     <!-- xmlns схемы поверки для нашего XML  -->
 
-    <!-- для настойки JSP используется jsp-config  -->
-    <jsp-config>
-        <!-- taglib использования библиотеки тегов  -->
+    <!--<login-config> испольуем для настойки аутентификации   -->
+    <login-config>
+        <!-- указываем метод аутентификации basic или form -->
+        <auth-method>BASIC</auth-method>
+        <!-- всплывающая подсказка -->
+        <realm-name>Это текс ил тега realm-name</realm-name>
+    </login-config>
+    <!-- security-constraint используется для указания какие ресурсы прячем
+       т.е. какие из них будут доступны после аутеннитификации-->
+    <security-constraint>
+        <web-resource-collection>
+            <!-- просто имя  -->
+            <web-resource-name>SecureJSP</web-resource-name>
+            <!-- ресурс или ресурсы -->
+            <url-pattern>/secure/Page.jsp</url-pattern>
+        </web-resource-collection>
+        <!-- auth-constraint указываем каким ролям разрешен доступ  -->
+        <auth-constraint>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
 
-        <!-- jsp-property-group настройка группы параметров для конкретной jsp или группы jsp или всех  -->
-        <jsp-property-group>
-            <!-- указываем к какой jsp относиться настройка, можно ко всем или группе(папке)  -->
-            <url-pattern>/jsp/Page.jsp</url-pattern>
-            <!-- el-ignored включает или отключает expression language -->
-            <el-ignored>false</el-ignored>
-            <!-- scripting-invalid вкд.чать/отключать скриптинг на странице -->
-            <scripting-invalid>false</scripting-invalid>
-            <!-- проверяет jsp на стандарт XML иначе ошибки-->
-            <is-xml>false</is-xml>
-            <!-- include-prelude страница включается в самое начало  -->
-            <include-prelude>/jsp/Header.jsp</include-prelude>
-            <!-- include-coda  страница включается в самый конец -->
-            <include-coda>/jsp/Footer.jsp</include-coda>
-        </jsp-property-group>
-    </jsp-config>
-
+    <!-- просто указать роли   -->
+    <security-role>
+        <role-name>root</role-name>
+    </security-role>
+    <security-role>
+        <role-name>admin</role-name>
+    </security-role>
 
 </web-app>
