@@ -9,9 +9,14 @@
     <!--<login-config> испольуем для настойки аутентификации   -->
     <login-config>
         <!-- указываем метод аутентификации basic или form -->
-        <auth-method>BASIC</auth-method>
-        <!-- всплывающая подсказка -->
-        <realm-name>Это текс ил тега realm-name</realm-name>
+        <auth-method>FORM</auth-method>
+        <!-- настройка форм -->
+        <form-login-config>
+            <!-- Страница ввода логина и пароля -->
+            <form-login-page>/secure/login-page.jsp</form-login-page>
+            <!-- странца куда идёт перенаправление при неправильном логине и пароле -->
+            <form-error-page>/secure/login-error.jsp</form-error-page>
+        </form-login-config>
     </login-config>
     <!-- security-constraint используется для указания какие ресурсы прячем
        т.е. какие из них будут доступны после аутеннитификации-->
@@ -20,7 +25,7 @@
             <!-- просто имя  -->
             <web-resource-name>SecureJSP</web-resource-name>
             <!-- ресурс или ресурсы -->
-            <url-pattern>/secure/Page.jsp</url-pattern>
+            <url-pattern>/secure/*</url-pattern>
         </web-resource-collection>
         <!-- auth-constraint указываем каким ролям разрешен доступ  -->
         <auth-constraint>
