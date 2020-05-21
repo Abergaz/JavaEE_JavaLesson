@@ -31,6 +31,10 @@
         <auth-constraint>
             <role-name>admin</role-name>
         </auth-constraint>
+        <!-- Включаем HTTPS -->
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
     </security-constraint>
 
     <!-- просто указать роли   -->
