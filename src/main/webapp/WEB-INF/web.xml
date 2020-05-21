@@ -65,4 +65,29 @@
         <role-name>admin</role-name>
     </security-role>
 
+    <!-- настройка фильтров   -->
+    <filter>
+        <!-- даём имя   -->
+        <filter-name>MyFilter</filter-name>
+        <!-- указываем имя класса фильтра  -->
+        <filter-class>ee.filter.MyNewFilter</filter-class>
+        <!-- можно подавать параметры и читать их потома в фильре   -->
+        <init-param>
+            <param-name>name</param-name>
+            <param-value>Макс</param-value>
+        </init-param>
+    </filter>
+    <!-- делаем привязку фильтра к сервлетам или jsp   -->
+    <filter-mapping>
+        <!-- имя фильтра   -->
+        <filter-name>MyFilter</filter-name>
+        <!-- url сервлета или jsp или шаблон   -->
+        <url-pattern>/MyNewFilter</url-pattern>
+        <!-- по умолчанию фильтр применяется к запросам  -->
+        <dispatcher>REQUEST</dispatcher>
+        <!-- но можно чтобы он применялся и к форвардам и к ошибкам    -->
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>ERROR</dispatcher>
+    </filter-mapping>
+
 </web-app>
