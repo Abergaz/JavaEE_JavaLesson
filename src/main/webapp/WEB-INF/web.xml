@@ -6,6 +6,22 @@
     <!-- обязательный элемент это  xsi:schemaLocation  -->
     <!-- xmlns схемы поверки для нашего XML  -->
 
+    <!-- описываем наш сервлет и указываем с какими ролями он связан  -->
+    <servlet>
+        <servlet-name>AuthServlet</servlet-name>
+        <servlet-class>ee.servlet.AuthServlet</servlet-class>
+        <security-role-ref>
+            <!-- Читаемый алиас для роли -->
+            <role-name>Administrators</role-name>
+            <!-- реальная роль -->
+            <role-link>admin</role-link>
+        </security-role-ref>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AuthServlet</servlet-name>
+        <url-pattern>/auth</url-pattern>
+    </servlet-mapping>
+
     <!--<login-config> испольуем для настойки аутентификации   -->
     <login-config>
         <!-- указываем метод аутентификации basic или form -->
@@ -27,11 +43,15 @@
             <!-- ресурс или ресурсы -->
             <url-pattern>/secure/*</url-pattern>
         </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>AuthServlet</web-resource-name>
+            <url-pattern>/auth</url-pattern>
+        </web-resource-collection>
         <!-- auth-constraint указываем каким ролям разрешен доступ  -->
         <auth-constraint>
             <role-name>admin</role-name>
         </auth-constraint>
-        <!-- Включаем HTTPS -->
+        <!-- В -->
         <user-data-constraint>
             <transport-guarantee>CONFIDENTIAL</transport-guarantee>
         </user-data-constraint>
