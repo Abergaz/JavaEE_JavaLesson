@@ -90,4 +90,9 @@
         <dispatcher>ERROR</dispatcher>
     </filter-mapping>
 
+    <!-- подключаем слушателя   -->
+    <listener>
+        <listener-class>ee.listner.ContextListner</listener-class>
+    </listener>
+
 </web-app>
