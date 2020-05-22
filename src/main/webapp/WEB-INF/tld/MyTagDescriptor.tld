@@ -17,5 +17,10 @@
             <name>name</name>
         </attribute>
     </tag>
+    <tag>
+        <name>MyInnerTag</name>
+        <tag-class>ee.tag.MyInnerTag</tag-class>
+        <body-content>scriptless</body-content>
+    </tag>
 
 </taglib>
