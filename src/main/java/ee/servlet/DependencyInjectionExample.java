@@ -1,6 +1,7 @@
 package ee.servlet;
 
 import javax.ejb.EJB;
+import javax.enterprise.inject.Alternative;
 import javax.inject.Inject;
 import javax.inject.Qualifier;
 import javax.servlet.ServletException;
@@ -17,15 +18,13 @@ import java.lang.annotation.Target;
 
 @WebServlet("/DIExample")
 public class DependencyInjectionExample  extends HttpServlet {
-    /** можно инжектить интерфейс, если реализация 1 то возьмется именнно она
-     * если реализаций много надо использоваться создать аннотация с  @Quantifier
-     *  и пометить ей соответствующий класс  и переменную с интервейсом куда инжектить*/
+    /** Если есть несколько реализаций интерфейся и не используем Quantifier
+     * то надо пометить один класс реализацию @Alternative и указать этот класс в
+     * WEB-INF/beans.xml в тег alternatives */
     @Inject
-    @StudentAnnotation
     Person person;
 
     @Inject
-    @WorkerAnnotation
     Person person2;
 
     @Override
@@ -34,24 +33,14 @@ public class DependencyInjectionExample  extends HttpServlet {
         System.out.println(person2.getName());
     }
 }
-/** Создаем аннотацию с @Qualifier, для того чтобы пометить ей класс
- * чтобы контейнер при встрече этой анатации знал обьект какого класса в положить в переменную*/
-@Qualifier
-@Retention(RetentionPolicy.RUNTIME) /** используется в режиме выполненения*/
-@Target({ElementType.FIELD,ElementType.TYPE,ElementType.METHOD })/** указываем что можно пометить*/
-@interface  StudentAnnotation{}
 
-@Qualifier
-@Retention(RetentionPolicy.RUNTIME) /** используется в режиме выполненения*/
-@Target({ElementType.FIELD,ElementType.TYPE,ElementType.METHOD })/** указываем что можно пометить*/
-@interface  WorkerAnnotation{}
 
 
 interface Person {
     String getName();
 }
 
-@StudentAnnotation
+@Alternative
 class Student implements Person{
     private String name;
 
@@ -70,7 +59,7 @@ class Student implements Person{
         this.name = name;
     }
 }
-@WorkerAnnotation
+
 class Worker implements Person{
     @Override
     public String getName() {
