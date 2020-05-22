@@ -2,6 +2,7 @@ package ee.servlet;
 
 import javax.ejb.EJB;
 import javax.enterprise.inject.Alternative;
+import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Qualifier;
 import javax.servlet.ServletException;
@@ -18,51 +19,63 @@ import java.lang.annotation.Target;
 
 @WebServlet("/DIExample")
 public class DependencyInjectionExample  extends HttpServlet {
-    /** Если есть несколько реализаций интерфейся и не используем Quantifier
-     * то надо пометить один класс реализацию @Alternative и указать этот класс в
-     * WEB-INF/beans.xml в тег alternatives */
     @Inject
-    Person person;
+    String s;
+
+    @Inject @S2
+    String s2;
+
 
     @Inject
-    Person person2;
+    int i;
+
+    @Inject
+    double d;
+
+    @Inject
+    Car car;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println(person.getName());
-        System.out.println(person2.getName());
+        resp.getWriter().write("s="+s+"; ");
+        resp.getWriter().write("i"+i+"; ");
+        resp.getWriter().write("d="+d+"; ");
+        resp.getWriter().write("car.name="+car.name+"; ");
+        resp.getWriter().write("s2="+s2+"; ");
     }
 }
+@Qualifier
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.FIELD,ElementType.TYPE,ElementType.METHOD})
+@interface S2{};
 
+class Producer{
+    @Produces
+    String s = "hello world";
 
+    @Produces @S2
+    String s2 = "second string";
 
-interface Person {
-    String getName();
-}
+    @Produces
+    int i=5;
 
-@Alternative
-class Student implements Person{
-    private String name;
-
-    public Student() {
+    @Produces
+    double getDouble(){
+        return 1+3.3+5.8;
     }
 
-    public Student(String name) {
+    @Produces
+    Car getCar(){
+        return (new Car("lada"));
+    }
+}
+class Car{
+    String name;
+
+
+    public Car(String name) {
         this.name = name;
     }
-
-    public String getName() {
-        return "student";
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }
 
-class Worker implements Person{
-    @Override
-    public String getName() {
-        return "worker";
-    }
-}
+
