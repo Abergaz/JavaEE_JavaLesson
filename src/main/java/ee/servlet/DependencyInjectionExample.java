@@ -1,5 +1,6 @@
 package ee.servlet;
 
+import javax.enterprise.context.*;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
 import javax.inject.Inject;
@@ -16,19 +17,39 @@ import java.util.logging.Logger;
 @WebServlet("/DIExample")
 public class DependencyInjectionExample extends HttpServlet {
     @Inject
-    Logger logger;
+    MyBean bean;
+    @Inject
+    ChangeMyBean changeMyBean;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.log(Level.ALL,"message");
+        bean.i=5;
+        changeMyBean.changeI();
+        resp.getWriter().write(bean.i+"");
     }
 }
+/**
+@ApplicationScoped - на все приложение
+@SessionScoped - хранится в сессии
+@RequestScoped - только в запросе
+@Dependent - по умолчанию
+@ConversationScoped
+*/
+@RequestScoped
+class MyBean{
+    int i;
+}
 
-class MyLogger {
-    @Produces
-    public Logger getLogger(InjectionPoint injectionPoint) {
-        return Logger.getLogger(injectionPoint.getMember().getDeclaringClass().getName());
+/** отличия RequestScoped от Dependent в том, что RequestScoped один на весь запрос
+ * даже если он заинжектен в разных местах. (аля сингелтон)
+ * А Dependent - он везде где инжектится создается свой экзепляр (аля прототайп)
+ */
+@Dependent
+class ChangeMyBean{
+    @Inject
+    MyBean myBean;
+    public void changeI(){
+        myBean.i=2;
     }
 
 }
-
 
