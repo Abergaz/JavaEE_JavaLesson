@@ -1,8 +1,12 @@
 package ee.servlet;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.interceptor.AroundInvoke;
+import javax.interceptor.InvocationContext;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,27 +18,36 @@ import java.io.IOException;
 @WebServlet("/DIExample")
 public class DependencyInjectionExample extends HttpServlet {
     @Inject
-    MyBean myBean;
+    LiveCycleBean liveCycleBean;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        /** передаем управление на JSP*/
-        RequestDispatcher requestDispatcher = req.getRequestDispatcher("/jsp/BeanExample.jsp");
-        requestDispatcher.forward(req,resp);
+        liveCycleBean.doJob();
+        liveCycleBean.doJob2();
     }
 }
-/** @Named - нужна для того чтобы можно было бин использовать на JSP стрнице и @RequestScoped */
-@RequestScoped
-@Named
-class MyBean{
-    private String s ="hello world";
-
-    public String getS() {
-        return s;
+class LiveCycleBean{
+    public LiveCycleBean() {
+        System.out.println("construct");
+    }
+    @PostConstruct /** анотация говорящая что надо вызвать метод сразу после создания обьекта бина */
+    private  void postConstruct(){
+        System.out.println("post construct");
+    }
+    @AroundInvoke /** вызовктся перед каждым методом*/
+    private Object aroundInvoke(InvocationContext context) throws Exception {
+        System.out.println("before method");
+        return context.proceed();
+    }
+    @PreDestroy /** вызовется перед уничтожением бина*/
+    private void preDestroy(){
+        System.out.println("pre destroy");
     }
 
-    public void setS(String s) {
-        this.s = s;
+
+    public void doJob(){
+        System.out.println(" do job");
+    }
+    public void doJob2(){
+        System.out.println("do job2");
     }
 }
-
-
