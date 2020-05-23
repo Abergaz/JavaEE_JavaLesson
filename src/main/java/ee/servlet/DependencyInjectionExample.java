@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,39 +18,35 @@ import java.util.logging.Logger;
 @WebServlet("/DIExample")
 public class DependencyInjectionExample extends HttpServlet {
     @Inject
-    MyBean bean;
-    @Inject
-    ChangeMyBean changeMyBean;
+    ConversationBean conversationBean;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        bean.i=5;
-        changeMyBean.changeI();
-        resp.getWriter().write(bean.i+"");
+        System.out.println(conversationBean.i);
+        conversationBean.i=1;
+        conversationBean.startConversation();
+        System.out.println(conversationBean.i);
+        System.out.println("middle Conversation");
+        conversationBean.i=3;
+        conversationBean.endConversation();
     }
 }
-/**
-@ApplicationScoped - на все приложение
-@SessionScoped - хранится в сессии
-@RequestScoped - только в запросе
-@Dependent - по умолчанию
+/** @ConversationScoped - можно самому определить сколько будет жить бин
+ обязательно должен быть сериалайзбл */
 @ConversationScoped
-*/
-@RequestScoped
-class MyBean{
+class ConversationBean implements Serializable{
     int i;
-}
-
-/** отличия RequestScoped от Dependent в том, что RequestScoped один на весь запрос
- * даже если он заинжектен в разных местах. (аля сингелтон)
- * А Dependent - он везде где инжектится создается свой экзепляр (аля прототайп)
- */
-@Dependent
-class ChangeMyBean{
     @Inject
-    MyBean myBean;
-    public void changeI(){
-        myBean.i=2;
+    Conversation conversation;
+    public void startConversation(){
+        System.out.println(i);
+        System.out.println("start Conversation");
+        conversation.begin();
+        i=2;
     }
-
+    public void endConversation(){
+        System.out.println("end Conversation");
+        conversation.end();
+    }
 }
+
 
