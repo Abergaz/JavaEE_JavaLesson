@@ -1,51 +1,39 @@
 package ee.servlet;
 
-import javax.enterprise.context.*;
-import javax.enterprise.inject.Produces;
-import javax.enterprise.inject.spi.InjectionPoint;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.Serializable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 
 @WebServlet("/DIExample")
 public class DependencyInjectionExample extends HttpServlet {
     @Inject
-    ConversationBean conversationBean;
+    MyBean myBean;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println(conversationBean.i);
-        conversationBean.i=1;
-        conversationBean.startConversation();
-        System.out.println(conversationBean.i);
-        System.out.println("middle Conversation");
-        conversationBean.i=3;
-        conversationBean.endConversation();
+        /** передаем управление на JSP*/
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher("/jsp/BeanExample.jsp");
+        requestDispatcher.forward(req,resp);
     }
 }
-/** @ConversationScoped - можно самому определить сколько будет жить бин
- обязательно должен быть сериалайзбл */
-@ConversationScoped
-class ConversationBean implements Serializable{
-    int i;
-    @Inject
-    Conversation conversation;
-    public void startConversation(){
-        System.out.println(i);
-        System.out.println("start Conversation");
-        conversation.begin();
-        i=2;
+/** @Named - нужна для того чтобы можно было бин использовать на JSP стрнице и @RequestScoped */
+@RequestScoped
+@Named
+class MyBean{
+    private String s ="hello world";
+
+    public String getS() {
+        return s;
     }
-    public void endConversation(){
-        System.out.println("end Conversation");
-        conversation.end();
+
+    public void setS(String s) {
+        this.s = s;
     }
 }
 
