@@ -5,9 +5,12 @@
         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
                       http://xmlns.jcp.org/xml/ns/javaee/beans_1_1.xsd"
         bean-discovery-mode="all">
-    <alternatives>
-        <class>ee.servlet.Student</class>
-    </alternatives>
+    <interceptors>
+        <class>ee.servlet.InterceptorOne</class>
+        <class>ee.servlet.InterceptorTwo</class>
+        <class>ee.servlet.InterceptorFree</class>
+        <class>ee.servlet.InterceptorFour</class>
+    </interceptors>
 </beans>
 <!--
     bean-discovery-mode="all"
