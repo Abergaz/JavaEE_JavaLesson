@@ -17,44 +17,47 @@ import java.io.IOException;
 @WebServlet("/DIExample")
 public class DependencyInjectionExample extends HttpServlet {
     @Inject
-    LiveCycleBean liveCycleBean;
+    InterceptorsService interceptorsService;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        liveCycleBean.doJob();
-        liveCycleBean.doJob2();
+        interceptorsService.doJob();
+        interceptorsService.doJob2();
     }
 }
 
-class Interceptor{
-    @AroundConstruct/** вызывается перед созданием бина, перед конструктором */
-    private void aroundConstruct(InvocationContext context) throws Exception{
-        System.out.println("before construct");
-        context.proceed();
-    }
-
-    @PostConstruct /** анотация говорящая что надо вызвать метод сразу после создания обьекта бина */
-    private  void postConstruct(InvocationContext context) throws Exception{
-        System.out.println("post construct");
-        context.proceed();
-    }
+class InterceptorOne{
     @AroundInvoke /** вызовается перед каждым методом*/
     private Object aroundInvoke(InvocationContext context) throws Exception {
-        System.out.println("before method");
+        System.out.println("one");
         return context.proceed();
     }
-    @PreDestroy /** вызовется перед уничтожением бина*/
-    private void preDestroy(InvocationContext context) throws Exception{
-        System.out.println("pre destroy");
-        context.proceed();
+}
+class InterceptorTwo{
+    @AroundInvoke /** вызовается перед каждым методом*/
+    private Object aroundInvoke(InvocationContext context) throws Exception {
+        System.out.println("two");
+        return context.proceed();
+    }
+}
+class InterceptorFree{
+    @AroundInvoke /** вызовается перед каждым методом*/
+    private Object aroundInvoke(InvocationContext context) throws Exception {
+        System.out.println("free");
+        return context.proceed();
+    }
+}
+class InterceptorFour{
+    @AroundInvoke /** вызовается перед каждым методом*/
+    private Object aroundInvoke(InvocationContext context) throws Exception {
+        System.out.println("four");
+        return context.proceed();
     }
 }
 
-@Interceptors(Interceptor.class) /** помечаем бин что  к нему пименяются интерсептор */
+@Interceptors({InterceptorOne.class, InterceptorTwo.class}) /** помечаем бин что  к нему пименяются интерсептор */
 @RequestScoped
-class LiveCycleBean{
-    public LiveCycleBean() {
-        System.out.println("construct");
-    }
+class InterceptorsService{
+    @Interceptors({InterceptorFree.class, InterceptorFour.class})
     public void doJob(){
         System.out.println(" do job");
     }
@@ -63,8 +66,4 @@ class LiveCycleBean{
         System.out.println("do job2");
     }
 
-    @Interceptors(Interceptor.class)/** можно помечать отдельные методы  а не класс целиком*/
-    public void doJob3(){
-        System.out.println("do job3");
-    }
 }
