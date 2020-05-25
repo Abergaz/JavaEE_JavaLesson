@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD,ElementType.FIELD,ElementType.ANNOTATION_TYPE,ElementType.CONSTRUCTOR,ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CheckSiteURL {
-    String message() default "wrong URL";/** сообщение об ошибке если не прошли валидацию*/
+    String message() default "{javax.validation.constrain.url.port.message}";/** сообщение об ошибке если не прошли валидацию*/
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 

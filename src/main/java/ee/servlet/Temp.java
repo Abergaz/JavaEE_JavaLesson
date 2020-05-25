@@ -1,5 +1,8 @@
 package ee.servlet;
 
+import ee.beanValidation.CheckEmail;
+import ee.beanValidation.CheckSiteURL;
+
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,8 +24,8 @@ public class Temp extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Set<ConstraintViolation<Child>> constraintViolationSet = validator.validateValue(Child.class,"name",null) ;
-        for(ConstraintViolation<Child> constraintViolation: constraintViolationSet){
+        Set<ConstraintViolation<PersonT>> constraintViolationSet = validator.validateValue(PersonT.class,"url","http://host.com:23") ;
+        for(ConstraintViolation<PersonT> constraintViolation: constraintViolationSet){
             System.out.println(constraintViolation.getMessage());
             System.out.println(constraintViolation.getInvalidValue());
         }
@@ -30,14 +33,7 @@ public class Temp extends HttpServlet {
 }
 
 class PersonT{
-    @NotNull
-    String name;
+    @CheckSiteURL(port = 22)
+    String url;
 }
-class Child extends PersonT{
-    void setName(String name){
-        this.name = name;
-    }
-    String getName(){
-        return name;
-    }
-}
+

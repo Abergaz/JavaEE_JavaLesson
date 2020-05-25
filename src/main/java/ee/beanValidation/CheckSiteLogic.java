@@ -44,8 +44,8 @@ public class CheckSiteLogic implements ConstraintValidator<CheckSiteURL, String>
         }
         if (port!=-1 && port != url.getPort() ){
             /** можем переопределить сообщение об ошибке, которая описана в аннотации */
-            context.disableDefaultConstraintViolation();/**отключили дефолтное*/
-            context.buildConstraintViolationWithTemplate("port invalid").addConstraintViolation();/** записали новое */
+            //context.disableDefaultConstraintViolation();/**отключили дефолтное*/
+            //context.buildConstraintViolationWithTemplate("port invalid").addConstraintViolation();/** записали новое */
             return false;
         }
         return true;
