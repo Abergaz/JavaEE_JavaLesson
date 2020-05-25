@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Set;
@@ -15,20 +16,28 @@ import java.util.Set;
 
 @WebServlet("/temp")
 public class Temp extends HttpServlet {
-    @Inject
-    Person person;
-
-    @Inject
+   @Inject
     Validator validator;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        person.setBithDate(LocalDate.of(2020,01,01));
-        person.setDeathDate(LocalDate.of(2120,01,01));
-        Set<ConstraintViolation<Person>> constraintViolationSet = validator.validate(person) ;
-        for(ConstraintViolation<Person> constraintViolation: constraintViolationSet){
+        Set<ConstraintViolation<Child>> constraintViolationSet = validator.validateValue(Child.class,"name",null) ;
+        for(ConstraintViolation<Child> constraintViolation: constraintViolationSet){
             System.out.println(constraintViolation.getMessage());
             System.out.println(constraintViolation.getInvalidValue());
         }
+    }
+}
+
+class PersonT{
+    @NotNull
+    String name;
+}
+class Child extends PersonT{
+    void setName(String name){
+        this.name = name;
+    }
+    String getName(){
+        return name;
     }
 }
