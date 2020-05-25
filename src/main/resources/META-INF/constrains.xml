@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<constraint-mappings xmlns="http://jboss.org/xml/ns/javax/validation/mapping" version="1.1">
+    <bean class="ee.servlet.PersonT">
+        <field name="age">
+            <constraint annotation="javax.validation.constraints.NotNull">
+                <message>name is not null</message>
+            </constraint>
+        </field>
+    </bean>
+</constraint-mappings>
