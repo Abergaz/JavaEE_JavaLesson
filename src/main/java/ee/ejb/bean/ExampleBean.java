@@ -2,6 +2,8 @@ package ee.ejb.bean;
 
 import javax.annotation.Resource;
 import javax.ejb.*;
+import javax.interceptor.AroundTimeout;
+import javax.interceptor.InvocationContext;
 
 @Singleton
 public class ExampleBean {
@@ -31,5 +33,13 @@ public class ExampleBean {
         System.out.println(timer.getInfo());
     }
 
+    /** interceptor для метода помеченного @Timeout */
+    @AroundTimeout
+    Object aroundTimeOut(InvocationContext context) throws Exception {
+        System.out.println("before print");
+        Object proceed = context.proceed();
+        System.out.println("after print");
+        return proceed;
+    }
 
 }
