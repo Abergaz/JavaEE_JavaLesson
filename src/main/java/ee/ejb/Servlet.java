@@ -14,6 +14,5 @@ public class Servlet extends HttpServlet {
      TempEjb tempEjb;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        tempEjb.print();
     }
 }
