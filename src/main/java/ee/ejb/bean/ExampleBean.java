@@ -1,24 +1,45 @@
 package ee.ejb.bean;
 
+import ee.ejb.HelloWorldEjb;
+
+import javax.annotation.Resource;
 import javax.ejb.*;
-import java.util.concurrent.TimeUnit;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
+import javax.jws.WebService;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceUnit;
+import javax.xml.ws.WebServiceRef;
+import javax.xml.ws.WebServiceRefs;
 
 @Singleton
-@Lock(LockType.WRITE) /** управляет потокобезопсностью, блокируется запись, изенение данных бина*/
-@AccessTimeout(value = 5,unit = TimeUnit.SECONDS)/** разлочить bean, если он не разлочиться сам чрере 5 секунд */
-@ConcurrencyManagement(ConcurrencyManagementType.BEAN)/** по умолчанию, блокировкой управляет контейнер, если bean то мы должны сами контролировать вручную через synchronized и т.д*/
 public class ExampleBean{
-    int i;
+    @PersistenceUnit
+    EntityManagerFactory entityManagerFactory;
+    @PersistenceContext
+    EntityManager entityManager;
+    @EJB
+    HelloWorldEjb helloWorldEjb;
+    @Inject
+    MyRequestScope myRequestScope;
+    @Resource
+    SessionContext sessionContext;
+    @WebServiceRef
+    MyWebService myWebService;
 
-    @Lock(LockType.READ) /** разрешаем этому методу чтение при многопоточности*/
-    public int getI() {
-        return i;
-    }
+   public String getName(){
+       /** sessionContext cпециальный объект котороый позволяет контролирвать поведение EJB бина */
+       return "Max";
+   }
+}
 
-    public int setI(int i) {
-        return this.i = i;
-    }
-    public int increaseI(){
-        return ++i;
-    }
+/** обычный бин */
+@RequestScoped
+class MyRequestScope{}
+/** web service*/
+@WebService
+class MyWebService{
+
 }
