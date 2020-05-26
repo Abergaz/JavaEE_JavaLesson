@@ -1,7 +1,7 @@
 package ee.ejb;
 
 import ee.ejb.bean.ExampleBean;
-import ee.ejb.bean.LocalExampleInterface;
+import ee.ejb.bean.SecondBean;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -14,15 +14,11 @@ import java.io.IOException;
 @WebServlet("/ejbExample")
 public class ExampleServlet extends HttpServlet {
     @EJB
-    LocalExampleInterface localExampleInterface; /** interface bean*/
-
+    ExampleBean exampleBean;
     @EJB
-    ExampleBean exampleBean; /** no interface bean*/
-
+    SecondBean secondBean;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.getWriter().write(localExampleInterface.getName()); /** интерфейс бин */
-        resp.getWriter().write(exampleBean.getName());/** non interface бин, не будет работать если у бина нет аннотации @LocalBean */
-        resp.getWriter().write(exampleBean.getSerName());
+
     }
 }
