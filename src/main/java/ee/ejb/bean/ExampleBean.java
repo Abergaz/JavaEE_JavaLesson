@@ -1,45 +1,28 @@
 package ee.ejb.bean;
 
-import ee.ejb.HelloWorldEjb;
-
-import javax.annotation.Resource;
 import javax.ejb.*;
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-import javax.jws.WebService;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceUnit;
-import javax.xml.ws.WebServiceRef;
-import javax.xml.ws.WebServiceRefs;
+import javax.ws.rs.core.Feature;
+import java.util.concurrent.Future;
 
 @Singleton
+@Asynchronous /** можно поставить на клвсс или метод */
 public class ExampleBean{
-    @PersistenceUnit
-    EntityManagerFactory entityManagerFactory;
-    @PersistenceContext
-    EntityManager entityManager;
-    @EJB
-    HelloWorldEjb helloWorldEjb;
-    @Inject
-    MyRequestScope myRequestScope;
-    @Resource
-    SessionContext sessionContext;
-    @WebServiceRef
-    MyWebService myWebService;
 
-   public String getName(){
-       /** sessionContext cпециальный объект котороый позволяет контролирвать поведение EJB бина */
-       return "Max";
+   public void getName(){
+       /** эмитируем долгую работу*/
+       try {
+           Thread.sleep(100_000);
+       } catch (InterruptedException e) {
+           e.printStackTrace();
+       }
    }
-}
-
-/** обычный бин */
-@RequestScoped
-class MyRequestScope{}
-/** web service*/
-@WebService
-class MyWebService{
-
+   /** если нужен возвращамый результат из асинхронного метода */
+   public Future<String> getMyName(){
+       try {
+           Thread.sleep(1000);
+       } catch (InterruptedException e) {
+           e.printStackTrace();
+       }
+       return new AsyncResult<String>("Max");
+   }
 }
