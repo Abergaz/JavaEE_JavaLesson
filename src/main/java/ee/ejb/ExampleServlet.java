@@ -2,8 +2,8 @@ package ee.ejb;
 
 import ee.ejb.bean.ExampleBean;
 
-import javax.annotation.Resource;
-import javax.naming.InitialContext;
+import javax.ejb.EJB;
+import javax.ejb.embeddable.EJBContainer;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,22 +14,19 @@ import java.io.IOException;
 
 @WebServlet("/ejbExample")
 public class ExampleServlet extends HttpServlet {
-    @Resource(lookup = "java:app/ExampleBean") /** Можно получить EJB бин через resource указав JNDI имяы*/
+    @EJB
     ExampleBean exampleBean;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-       /** или вместо @EJB или @Resource EJB бины можно поолучить из InitialContext использую JNDI имя формата:
-        java:<scope>[/app-name]/[module-name]/bean-name[!<fully-qualified-interface-name] */
-        InitialContext initialContext = null;
-        ExampleBean exampleBean2 = null;
-        try {
-            initialContext = new InitialContext();
-            exampleBean2 = (ExampleBean) initialContext.lookup("java:app/ExampleBean");
-        } catch (NamingException e) {
+        resp.getWriter().write(exampleBean.getName());
+    }
+
+    public static void main(String[] args) {
+        try(EJBContainer ejbContainer = new EJBContainer.createEJBContainer()){
+            ExampleBean exampleBean = (ExampleBean) ejbContainer.getContext().lookup("java:app/ExampleBean");
+            System.out.println(exampleBean.getName());
+        }catch (NamingException e){
             e.printStackTrace();
         }
-
-        resp.getWriter().write(exampleBean.getName());
-        resp.getWriter().write(exampleBean2.getName());
     }
 }
