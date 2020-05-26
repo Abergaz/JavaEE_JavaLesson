@@ -1,42 +1,35 @@
 package ee.ejb.bean;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.ejb.PostActivate;
-import javax.ejb.PrePassivate;
-import javax.ejb.Remove;
-import javax.ejb.Stateful;
+import javax.annotation.Resource;
+import javax.ejb.*;
 
+@Singleton
+public class ExampleBean {
+    @Resource
+    SessionContext sessionContext;
+    /**
+     * или сразу заинжектить TimeService
+     */
+    @Resource
+    TimerService timerService;
 
+    public String getName() {
+        // TimerService timerService = sessionContext.getTimerService();
+        ScheduleExpression scheduleExpression = new ScheduleExpression();
+        scheduleExpression.hour("*").minute("*").second("*");
+        timerService.createCalendarTimer(scheduleExpression, new TimerConfig("in worked at every second with TimerService", false));
 
-/** @Singleton и @Stateless одинаковый жизненый цикл */
-@Stateful /**@Stateful к жизненному циклу добавляется еще 3 метода @PrePassivate и @PostActivate и @Remove*/
-public class ExampleBean{
-    public String getName(){
-       return "Max ";
-   }
-   @PostConstruct
-    void postConstruct(){
-       System.out.println("PostConstruct");
-   }
-    @PreDestroy
-    void preDestroy(){
-        System.out.println("PreDestroy");
+        return "Max ";
+    }
+    @Schedule(second = "*", minute = "*", hour = "*")
+    private void printMessage1() {
+        System.out.println("in worked at every second with @Schedule");
     }
 
-    /** @Stateful к жизненному циклу добавляется еще 3 метода @PrePassivate и @PostActivate и @Remove*/
+    @Timeout
+    public void printMessage2(Timer timer){
+        System.out.println(timer.getInfo());
+    }
 
-    @PrePassivate /** вызывается перед сохраенинием */
-    void prePassivate(){
-        System.out.println("PrePassivate");
-    }
-    @PostActivate  /** вызывается после востановления */
-    void postActivate(){
-        System.out.println("postActivate");
-    }
-    @Remove
-    void remove(){
-        System.out.println("remove");
-    }
 
 }
