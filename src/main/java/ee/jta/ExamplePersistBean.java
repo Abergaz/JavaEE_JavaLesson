@@ -1,8 +1,7 @@
 package ee.jta;
 
-import javax.ejb.Singleton;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
+import javax.annotation.Resource;
+import javax.ejb.*;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -18,7 +17,19 @@ import javax.persistence.PersistenceContext;
 public class ExamplePersistBean {
     @PersistenceContext
     EntityManager entityManager;
+    @Resource
+    SessionContext sessionContext;/** инжектим контекст для управления транзакциями */
     public void saveStudent(){
         entityManager.persist(new Student("Max"));
+        sessionContext.setRollbackOnly(); /** откатываем транзакцию*/
+        throw  new RuntimeException(); /** при выбрасывании RuntimeException транзакция тоже откатывается */
+
     }
+}
+
+/** при проверяемых исключенях транзакци не откатываются,
+  но можно создать свое проверяемое исключени и пометить аннотацией  */
+@ApplicationException(rollback = true)
+class MyException extends Exception{
+
 }
