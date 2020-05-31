@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Date;
 
 @WebServlet("/jmsProducerServletExample")
@@ -21,18 +22,16 @@ public class JmsProducerServletExample extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        jmsContext.createProducer().send(queue, "message was send at: " + new Date());
+        jmsContext.createProducer().send(queue, new Student("Max"));
+        Student student =jmsContext.createConsumer(queue).receiveBody(Student.class);
+        System.out.println(student.name);
 
-        /** создаем асинхронного слушателя событий*/
-        jmsContext.createConsumer(queue).setMessageListener(new MessageListener() {
-            @Override
-            public void onMessage(Message message) {
-                try {
-                    System.out.println(message.getBody(String.class));
-                } catch (JMSException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+    }
+}
+class Student implements Serializable {
+    String name;
+
+    public Student(String name) {
+        this.name = name;
     }
 }
