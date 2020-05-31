@@ -1,10 +1,7 @@
 package ee.jms;
 
 import javax.annotation.Resource;
-import javax.inject.Inject;
 import javax.jms.*;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,22 +12,14 @@ import java.util.Date;
 
 @WebServlet("/jmsProducerServletExample")
 public class JmsProducerServletExample extends HttpServlet {
-    @Resource(lookup ="openejb:Resource/MyJMSConnectionFactory")
+    @Resource
     ConnectionFactory connectionFactory;
-    @Resource(lookup ="openejb:Resource/FooQueue")
+    @Resource(name = "someQueue")
     Queue queue;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
-            Connection connection = connectionFactory.createConnection();
-            connection.start();
-            Session session = connection.createSession();
-            MessageProducer messageProducer = session.createProducer(queue);
-            Message message = session.createTextMessage("message was sent at: " + new Date());
-            messageProducer.send(message);
-            connection.close();
-        } catch (JMSException e) {
-            e.printStackTrace();
+        try(JMSContext jmsContext =connectionFactory.createContext()){
+            jmsContext.createProducer().send(queue,"message was send at: "+new Date());
         }
     }
 }

@@ -2,8 +2,6 @@ package ee.jms;
 
 import javax.annotation.Resource;
 import javax.jms.*;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,23 +11,15 @@ import java.io.IOException;
 
 @WebServlet("/jmsConsumerServletExample")
 public class JmsConsumerServletExample extends HttpServlet {
-    @Resource(lookup ="openejb:Resource/MyJMSConnectionFactory")
+    @Resource
     ConnectionFactory connectionFactory;
-    @Resource(lookup ="openejb:Resource/FooQueue")
+    @Resource(name = "someQueue")
     Queue queue;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
-            Connection connection = connectionFactory.createConnection();
-            connection.start();
-            Session session = connection.createSession();
-            MessageConsumer messageConsumer = session.createConsumer(queue);
-            TextMessage textMessage = (TextMessage) messageConsumer.receive();
-            System.out.println(textMessage.getText());
-            resp.getWriter().write(textMessage.getText());
-            connection.close();
-        } catch (JMSException e) {
-            e.printStackTrace();
+        try(JMSContext jmsContext = connectionFactory.createContext()) {
+            String textMessage = jmsContext.createConsumer(queue).receiveBody(String.class);
+            System.out.println(textMessage);
         }
     }
 }
