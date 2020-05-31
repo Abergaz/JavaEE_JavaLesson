@@ -1,49 +1,47 @@
 package ee.json;
 
 import javax.json.*;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.List;
+import javax.json.stream.JsonGenerator;
+import javax.json.stream.JsonParser;
+import java.io.*;
+
 
 public class MainExample {
     public static void main(String[] args) throws IOException {
-        /** пишем Json в файл*/
-        JsonObject jsonObject = new MainExample().getJSon();
-        JsonWriter jsonWriter = Json.createWriter(new FileWriter("Student.json"));
-        jsonWriter.write(jsonObject);
-        jsonWriter.close();
-        /** читаем Json c файла*/
-        JsonReader jsonReader = Json.createReader(new FileReader("Student.json"));
-        JsonObject jsonObjectR = jsonReader.readObject();/** получили корневой обьект */
-        JsonObject student = jsonObjectR.getJsonObject("Student");/** получили обьект Student из корневого */
-        System.out.println(student.getString("name"));
-        System.out.println(student.getInt("age"));
-        JsonObject address = student.getJsonObject("address"); /** получили обьект adress из Student*/
-        System.out.println(address.getString("city"));
-        System.out.println(address.getString("street"));
-        /** бежим по массиву */
-        List<JsonValue> exams = student.getJsonArray("exams");
-        for (JsonValue jsonValue: exams){
-            System.out.println(jsonValue.toString());
+        /** пишим JSON в file*/
+        StringWriter stringWriter = new MainExample().getWriter();
+        FileWriter fileWriter = new FileWriter("Student.json");
+        fileWriter.write(stringWriter.toString());
+        fileWriter.close();
+        /** читаем JSON из file*/
+        JsonParser jsonParser = Json.createParser(new FileReader("Student.json"));
+        while (jsonParser.hasNext()){
+            JsonParser.Event event = jsonParser.next();
+           if (event.equals(JsonParser.Event.KEY_NAME) || event.equals(JsonParser.Event.VALUE_NUMBER) ||event.equals(JsonParser.Event.VALUE_STRING)){
+               System.out.println(jsonParser.toString());
+           }
         }
-
-
     }
-    private JsonObject getJSon(){
-        return Json.createObjectBuilder() /** добавляем обьект Student*/
-                .add("Student", Json.createObjectBuilder()
-                        .add("name","Max")
-                        .add("age",22)
-                        .add("adress",Json.createObjectBuilder() /** добавляем обьект adress в Student */
-                             .add("city","Moscow")
-                             .add("street","Lenina")
-                        )
-                .add("exams", Json.createArrayBuilder()
-                        .add("math")
-                        .add("english")
-                        .add("chemistry")
-                     )
-                ).build();
+
+    public StringWriter getWriter() {
+        StringWriter stringWriter = new StringWriter();
+        JsonGenerator generator = Json.createGenerator(stringWriter);
+        generator.writeStartObject() /** создаем корневой обьект*/
+                .writeStartObject("Student") /** создаем обьект Student в корневом*/
+                .write("name", "Max")
+                .write("age", 22)
+                .writeStartObject("adress")/** добавляем обьект adress в student*/
+                .write("city", "Moscow")
+                .write("street", "lenina")
+                .writeEnd()/** закрываем обьект adress*/
+                .writeStartArray("exams") /** добавляем массив в студента*/
+                .write("englis")
+                .write("math")
+                .write("chimistry")
+                .writeEnd() /** закыли массив */
+                .writeEnd() /** закрыли студента*/
+                .writeEnd() /** закрыли корневой*/
+                .close();
+        return stringWriter;
     }
 }
