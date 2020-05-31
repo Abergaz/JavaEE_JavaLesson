@@ -22,9 +22,14 @@ public class JmsProducerServletExample extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        jmsContext.createProducer().send(queue, new Student("Max"));
-        Student student =jmsContext.createConsumer(queue).receiveBody(Student.class);
-        System.out.println(student.name);
+        jmsContext.createProducer().setPriority(2).send(queue, new Student("Two")); /** можно ставиить приоритеты*/
+        jmsContext.createProducer().setPriority(1).setTimeToLive(1000).send(queue, new Student("One")); /** время хранения сообщения в очереди */
+        jmsContext.createProducer().setPriority(3).setProperty("SomeProperty",1).send(queue, new Student("Three"));/** можно добавлять свои проперти и фильтровать по ним*/
+
+        JMSConsumer jmsConsumer=jmsContext.createConsumer(queue,"JMSPriority>1 or SomeProperty<>!");/** фильтрация сообщений*/
+        System.out.println(jmsConsumer.receiveBody(Student.class));
+        System.out.println(jmsConsumer.receiveBody(Student.class));
+        System.out.println(jmsConsumer.receiveBody(Student.class));
 
     }
 }
