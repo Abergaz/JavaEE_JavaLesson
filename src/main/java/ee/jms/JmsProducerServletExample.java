@@ -1,6 +1,7 @@
 package ee.jms;
 
 import javax.annotation.Resource;
+import javax.inject.Inject;
 import javax.jms.*;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,14 +13,14 @@ import java.util.Date;
 
 @WebServlet("/jmsProducerServletExample")
 public class JmsProducerServletExample extends HttpServlet {
-    @Resource
-    ConnectionFactory connectionFactory;
+    @Inject
+    @JMSConnectionFactory("MyJMSConnectionFactory")/** можно указть если нужна специальная фабрика из настроек */
+    JMSContext jmsContext;
     @Resource(name = "someQueue")
     Queue queue;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try(JMSContext jmsContext =connectionFactory.createContext()){
-            jmsContext.createProducer().send(queue,"message was send at: "+new Date());
-        }
+        jmsContext.createProducer().send(queue, "message was send at: " + new Date());
     }
 }
