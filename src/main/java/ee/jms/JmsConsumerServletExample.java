@@ -10,11 +10,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@JMSConnectionFactoryDefinition(name = "MyNewFactory")
+@JMSDestinationDefinition(interfaceName = "javax.jms.Queue", name = "MyNewQueue")
 @WebServlet("/jmsConsumerServletExample")
 public class JmsConsumerServletExample extends HttpServlet {
-    @Resource(name = "someQueue")
+    @Resource(name = "MyNewQueue")
     Queue queue;
     @Inject
+    @JMSConnectionFactory("MyNewFactory")
     JMSContext jmsContext;
 
     @Override

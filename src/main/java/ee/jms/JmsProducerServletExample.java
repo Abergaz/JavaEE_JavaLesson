@@ -12,12 +12,14 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 
+@JMSConnectionFactoryDefinition(name = "MyNewFactory")
+@JMSDestinationDefinition(interfaceName = "javax.jms.Queue", name = "MyNewQueue")
 @WebServlet("/jmsProducerServletExample")
 public class JmsProducerServletExample extends HttpServlet {
     @Inject
-    @JMSConnectionFactory("MyJMSConnectionFactory")/** можно указть если нужна специальная фабрика из настроек */
-            JMSContext jmsContext;
-    @Resource(name = "someQueue")
+    @JMSConnectionFactory("MyNewFactory")
+    JMSContext jmsContext;
+    @Resource(name = "MyNewQueue")
     Queue queue;
 
     @Override
