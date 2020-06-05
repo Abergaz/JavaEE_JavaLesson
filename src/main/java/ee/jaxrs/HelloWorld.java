@@ -1,9 +1,6 @@
 package ee.jaxrs;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 
 @Path("/sayHelloWorld") /** помечаем что это RESTfull-сервис и указываем точку входа*/
 public class HelloWorld {
@@ -12,5 +9,10 @@ public class HelloWorld {
     @Consumes("text/html")/** указываем тип принимаемого значения - mime type */
     public String sayHello(){
         return "hello world";
+    }
+    @POST
+    @Produces("text/plain")
+    public String put(){
+        return "put";
     }
 }
