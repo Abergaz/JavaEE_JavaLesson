@@ -13,21 +13,31 @@
 
     <h:form>
         <!-- commandButton и commandLink позволяет выполнять какой либо код-->
-        <h:commandButton action="#{printHello.printHello}" value="some button"></h:commandButton>
-        <h:commandLink>some link</h:commandLink>
+        <h:commandButton action="#{printHello.printHello}" value="some button"></h:commandButton><br></br>
+        <h:commandLink>some link</h:commandLink><br></br>
         <!-- button и link позволяют переходить на другую страницу-->
-        <h:button outcome="commands.xhtml"></h:button>
-        <h:link outcome="commands.xhtml">some link</h:link>
+        <h:button outcome="commands.xhtml"></h:button><br></br>
+        <h:link outcome="commands.xhtml">some link</h:link><br></br>
         <!-- кнопка для выбора файла-->
-        <h:inputFile></h:inputFile>
+        <h:inputFile></h:inputFile><br></br>
         <!-- скрытое поле которое не отображается-->
-        <h:inputHidden></h:inputHidden>
+        <h:inputHidden></h:inputHidden><br></br>
         <!-- стандартное поле для ввода пароля-->
-        <h:inputSecret></h:inputSecret>
+        <h:inputSecret></h:inputSecret><br></br>
         <!-- стандартное поле для ввода текста-->
-        <h:inputText value="#{printHello.input}"></h:inputText>
+        <h:inputText value="#{printHello.input}"></h:inputText><br></br>
         <!-- стандартное поле для ввода многострочного текста-->
-        <h:inputTextarea></h:inputTextarea>
+        <h:inputTextarea></h:inputTextarea><br></br>
+        <!-- стандартное поле для вывода -->
+        <h:outputLabel value="some label"></h:outputLabel><br></br>
+        <!-- стандартное поле для вывода многострочного текста-->
+        <h:outputText value="some text"></h:outputText><br></br>
+        <!-- стандартное поле для вывода ссылок-->
+        <h:outputLink value="some link"></h:outputLink><br></br>
+        <!-- форматированный вывод-->
+        <h:outputFormat value="my name is {myName}">
+            <f:param name="myName" value="Serg"></f:param>
+        </h:outputFormat>
 
     </h:form>
 </h:body>
