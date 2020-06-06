@@ -14,10 +14,10 @@ public class MessageWebSocket {
         System.out.println("Connection open on server");
     }
 
-    @OnMessage
-    public void OnMessage(Session session, MyMessage message, @PathParam("param") String param) throws IOException, EncodeException {
-        session.getBasicRemote().sendObject(message);
-    }
+//    @OnMessage
+//    public void OnMessage(Session session, MyMessage message, @PathParam("param") String param) throws IOException, EncodeException {
+//        session.getBasicRemote().sendObject(message);
+//    }
 
     @OnMessage
     public void OnMessage(Session session, String message) throws IOException {
