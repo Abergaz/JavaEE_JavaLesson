@@ -15,25 +15,11 @@ public class HelloWorld {
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes(MediaType.TEXT_PLAIN)
     public String sayHello(){
-        /** так делать нельзя, т.к. будет выкинут стектрей, это не красиво
-         надо или использовать мапперы*/
-        throw new RuntimeException("RuntimeException");
-        /** или  выкидывать специальные статусы а ошибку логировать */
-        throw new BadRequestException("сообщение"); /** вернет 400 ошибку и сообщение*/
-
-
+        return "Hello world";
     }
     @POST
     @Produces("text/plain")
     public String put() throws IOException {
         throw new IOException("IOException");
-    }
-}
-/** Маппер ошибок на статус ответа*/
-@Provider
-class RunTimeExceptionMapper implements ExceptionMapper<RuntimeException>{
-    @Override
-    public Response toResponse(RuntimeException exception) {
-        return Response.status(404).entity(exception.getMessage()).type(MediaType.TEXT_PLAIN).build();
     }
 }
