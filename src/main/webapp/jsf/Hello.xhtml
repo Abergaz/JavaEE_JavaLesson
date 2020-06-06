@@ -35,9 +35,31 @@
         <!-- стандартное поле для вывода ссылок-->
         <h:outputLink value="some link"></h:outputLink><br></br>
         <!-- форматированный вывод-->
-        <h:outputFormat value="my name is {myName}">
-            <f:param name="myName" value="Serg"></f:param>
+        <h:outputFormat value="my name is {0}">
+            <f:param name="0" value="Serg"></f:param>
         </h:outputFormat>
+
+        <!-- селекты-->
+        <h:selectOneMenu>
+            <f:selectItem itemLabel="one_selectOneMenu"></f:selectItem>
+            <f:selectItem itemLabel="two_selectOneMenu"></f:selectItem>
+        </h:selectOneMenu>
+        <h:selectBooleanCheckbox>
+            <f:selectItem itemLabel="one_selectBooleanCheckbox"></f:selectItem>
+            <f:selectItem itemLabel="two_selectBooleanCheckbox"></f:selectItem>
+        </h:selectBooleanCheckbox>
+        <h:selectManyListbox>
+            <f:selectItem itemLabel="one_selectManyListbox"></f:selectItem>
+            <f:selectItem itemLabel="two_selectManyListbox"></f:selectItem>
+        </h:selectManyListbox>
+        <h:selectOneListbox>
+            <f:selectItem itemLabel="one_selectOneListbox"></f:selectItem>
+            <f:selectItem itemLabel="two_selectOneListbox"></f:selectItem>
+        </h:selectOneListbox>
+        <h:selectOneRadio>
+            <f:selectItem itemLabel="one_selectOneRadio"></f:selectItem>
+            <f:selectItem itemLabel="two_selectOneRadio"></f:selectItem>
+        </h:selectOneRadio>
 
     </h:form>
 </h:body>
