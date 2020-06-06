@@ -1,11 +1,12 @@
 package ee.websocets;
 
 import javax.websocket.*;
+import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-@ServerEndpoint(value = "/messageWebSocket", encoders = MyMessageEncoder.class, decoders = MyMessageDecoder.class)
+@ServerEndpoint(value = "/messageWebSocket/{param}", encoders = MyMessageEncoder.class, decoders = MyMessageDecoder.class)
 public class MessageWebSocket {
 
     @OnOpen
@@ -14,7 +15,7 @@ public class MessageWebSocket {
     }
 
     @OnMessage
-    public void OnMessage(Session session, MyMessage message) throws IOException, EncodeException {
+    public void OnMessage(Session session, MyMessage message, @PathParam("param") String param) throws IOException, EncodeException {
         session.getBasicRemote().sendObject(message);
     }
 
