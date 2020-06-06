@@ -1,16 +1,26 @@
 package ee.jaxrs;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.*;
+import javax.ws.rs.ext.Provider;
+import javax.ws.rs.ext.Providers;
 
-@Path("/sayHelloWorld") /** помечаем что это RESTfull-сервис и указываем точку входа*/
-@Produces(MediaType.TEXT_PLAIN) /** на все методы тоже самое что и "text/plain" */
+@Path("/sayHelloWorld")
+@Produces(MediaType.TEXT_PLAIN)
 public class HelloWorld {
-    @GET /** помечаем метод аннотацией @GET-получить, @PUT-создать, @POST-обновить, @DELETE, @HEAD, @OPTION */
-    @Produces("text/plain") /** указываем тип возвращаемого значения - mime type */
-    @Consumes("text/html")/** указываем тип принимаемого значения - mime type */
-    public String sayHello(){
-        return "hello world";
+    @Context
+    UriInfo uriInfo; /** можно инжекстить информация о URL*/
+
+
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.TEXT_PLAIN)
+    public String sayHello(@Context HttpHeaders httpHeaders, /** можно инжектить заголовки */
+                           @Context Request request, /** инжектим запрос*/
+                           @Context Providers providers, /** для преобразования форматов*/
+                           @Context SecurityContext securityContext
+                           ){
+        return uriInfo.getAbsolutePath().toString();
     }
     @POST
     @Produces("text/plain")
