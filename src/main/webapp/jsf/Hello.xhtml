@@ -12,8 +12,12 @@
     <h:outputLabel> Hello world</h:outputLabel>
 
     <h:form>
+        <!-- commandButton и commandLink позволяет выполнять какой либо код-->
         <h:commandButton action="#{printHello.printHello}" value="some button"></h:commandButton>
         <h:commandLink>some link</h:commandLink>
+        <!-- button и link позволяют переходить на другую страницу-->
+        <h:button outcome="commands.xhtml"></h:button>
+        <h:link outcome="commands.xhtml">some link</h:link>
     </h:form>
 </h:body>
 </html>
