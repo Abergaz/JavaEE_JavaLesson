@@ -5,7 +5,17 @@ import javax.faces.bean.ManagedBean;
 
 @ManagedBean
 public class PrintHello {
+    String input;
+
+    public String getInput() {
+        return input;
+    }
+
+    public void setInput(String input) {
+        this.input = input;
+    }
+
     public void printHello(){
-        System.out.println("print Hello");
+        System.out.println("print Hello " +input);
     }
 }

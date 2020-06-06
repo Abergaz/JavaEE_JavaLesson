@@ -18,6 +18,17 @@
         <!-- button и link позволяют переходить на другую страницу-->
         <h:button outcome="commands.xhtml"></h:button>
         <h:link outcome="commands.xhtml">some link</h:link>
+        <!-- кнопка для выбора файла-->
+        <h:inputFile></h:inputFile>
+        <!-- скрытое поле которое не отображается-->
+        <h:inputHidden></h:inputHidden>
+        <!-- стандартное поле для ввода пароля-->
+        <h:inputSecret></h:inputSecret>
+        <!-- стандартное поле для ввода текста-->
+        <h:inputText value="#{printHello.input}"></h:inputText>
+        <!-- стандартное поле для ввода многострочного текста-->
+        <h:inputTextarea></h:inputTextarea>
+
     </h:form>
 </h:body>
 </html>
