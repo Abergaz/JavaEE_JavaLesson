@@ -61,6 +61,17 @@
             <f:selectItem itemLabel="two_selectOneRadio"></f:selectItem>
         </h:selectOneRadio>
 
+        <h:panelGrid columns="3" border="1">
+            <f:facet name="header">
+                <h:outputText value="Header"></h:outputText>
+            </f:facet>
+            <h:outputLabel value="one"></h:outputLabel>
+            <h:outputLabel value="two"></h:outputLabel>
+            <h:outputLabel value="free"></h:outputLabel>
+            <f:facet name="footer">
+                <h:outputText value="Footer"></h:outputText>
+            </f:facet>
+        </h:panelGrid>
     </h:form>
 </h:body>
 </html>
