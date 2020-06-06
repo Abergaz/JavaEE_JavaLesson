@@ -5,12 +5,17 @@ import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-@ServerEndpoint("/messageWebSocket")
+@ServerEndpoint(value = "/messageWebSocket", encoders = MyMessageEncoder.class, decoders = MyMessageDecoder.class)
 public class MessageWebSocket {
 
     @OnOpen
     public void OnOpen(Session session){
         System.out.println("Connection open on server");
+    }
+
+    @OnMessage
+    public void OnMessage(Session session, MyMessage message) throws IOException, EncodeException {
+        session.getBasicRemote().sendObject(message);
     }
 
     @OnMessage

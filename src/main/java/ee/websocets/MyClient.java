@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.ByteBuffer;
 
-@ClientEndpoint /** создаем клиент websocket*/
+@ClientEndpoint(encoders = MyMessageEncoder.class, decoders = MyMessageDecoder.class) /** создаем клиент websocket*/
 public class MyClient {
     @OnOpen
     public void OnOpen(Session session){
@@ -33,11 +33,13 @@ public class MyClient {
         System.out.println("Server connection is closed");
     }
 
-    public static void main(String[] args) throws IOException, DeploymentException {
+    public static void main(String[] args) throws IOException, DeploymentException, EncodeException {
         WebSocketContainer container = ContainerProvider.getWebSocketContainer();
         Session session = container.connectToServer(MyClient.class, URI.create("ws://localhost:8080/myEndpoint"));
         session.getBasicRemote().sendText("hello world websocket (endpoint)"); /** отправляем сообщение на websocket*/
         session.getBasicRemote().sendBinary(ByteBuffer.wrap("hello".getBytes()));
         session.getBasicRemote().sendPing(ByteBuffer.wrap("hello".getBytes()));
+
+        session.getBasicRemote().sendObject(new MyMessage("hello world"));
     }
 }
